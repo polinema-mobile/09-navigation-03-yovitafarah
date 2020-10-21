@@ -1,5 +1,6 @@
 package id.ac.polinema.skor.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +14,11 @@ import id.ac.polinema.skor.R;
 import id.ac.polinema.skor.databinding.FragmentGoalBinding;
 import id.ac.polinema.skor.models.GoalScorer;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class GoalFragment extends Fragment {
 
 	private String requestKey;
 	private GoalScorer goalScorer;
+	private FragmentGoalBinding binding;
 
 	public GoalFragment() {
 		// Required empty public constructor
@@ -32,9 +31,8 @@ public class GoalFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
-		FragmentGoalBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_goal, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_goal, container, false);
 		binding.setFragment(this);
 		binding.setGoalScorer(goalScorer);
 		requestKey = GoalFragmentArgs.fromBundle(getArguments()).getRequestKey();
@@ -42,6 +40,8 @@ public class GoalFragment extends Fragment {
 	}
 
 	public void onSaveClicked(View view) {
+		goalScorer.setName(binding.inputName.getText().toString());
+		goalScorer.setMinute(Integer.parseInt(binding.inputMinute.getText().toString()));
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(ScoreFragment.SCORER_KEY, goalScorer);
 		getParentFragmentManager().setFragmentResult(requestKey, bundle);
